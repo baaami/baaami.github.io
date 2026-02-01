@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Experience - Engineering Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">
+                <span>Seongbum Lee</span>
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about_me.html">About</a></li>
+                <li><a href="work_experience.html" class="active">Experience</a></li>
+                <li><a href="personal_projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1 class="page-title">Work Experience</h1>
+            <p class="page-subtitle">보안 영역을 중심으로 커리어를 쌓아왔습니다.</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="cards-list">
+                <!-- 42dot -->
+                <div class="card-horizontal" onclick="openModal('exp1')">
+                    <div class="card-image" style="background: white;">
+                        <img src="../images/companies_logo/42dot-logo.webp" alt="42dot Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">2024.12 - Present</div>
+                        <h3 class="card-title">Security Engineer (IDS Backend & Embedded)</h3>
+                        <p class="card-description">차량 플랫폼 IDS Backend 및 Embedded 영역을 담당하며 Rust 기반 IDS 서비스 구현, 보안 통신 프레임워크 설계, 성능 최적화를 주도했습니다.</p>
+                        <div class="card-tags">
+                            <span class="card-tag">Rust</span>
+                            <span class="card-tag">Yocto</span>
+                            <span class="card-tag">Linux</span>
+                            <span class="card-tag">IDS</span>
+                            <span class="card-tag">eBPF</span>
+                            <span class="card-tag">Systemd</span>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </div>
+                </div>
+
+                <!-- AhnLab -->
+                <div class="card-horizontal" onclick="openModal('exp2')">
+                    <div class="card-image" style="background: white;">
+                        <img src="../images/companies_logo/ahnlab-logo.jpg" alt="AhnLab Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">2020.11 - 2024.12</div>
+                        <h3 class="card-title">Security Engineer (Linux Antivirus V3)</h3>
+                        <p class="card-description">Linux Antivirus V3 개발을 주도하며 탐지 엔진 개선과 안정성 확보, 배포 이슈 대응을 수행했습니다.</p>
+                        <div class="card-tags">
+                            <span class="card-tag">Linux</span>
+                            <span class="card-tag">Security</span>
+                            <span class="card-tag">AV Engine</span>
+                            <span class="card-tag">System Programming</span>
+                            <span class="card-tag">C</span>
+                        </div>
+                        <div class="card-arrow">→</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal(event)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-image">
+                <img id="modalImage" src="" alt="Company Image">
+            </div>
+            <div class="modal-content">
+                <div class="modal-category" id="modalCategory">Category</div>
+                <h2 class="modal-title" id="modalTitle">Position Title</h2>
+                <p class="modal-description" id="modalDescription">Description goes here.</p>
+                <div class="modal-details">
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Duration</span>
+                        <span class="modal-detail-value" id="modalDuration">—</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Role</span>
+                        <span class="modal-detail-value" id="modalRole">—</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Status</span>
+                        <span class="modal-detail-value" id="modalStatus">—</span>
+                    </div>
+                </div>
+                <div class="modal-tags" id="modalTags"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">© 2026 Seongbum Lee. Built with clarity and care.</p>
+        </div>
+    </footer>
+
+    <script>
+        const experienceData = {
+            exp1: {
+                category: 'Work Experience',
+                title: '42dot Security Engineer',
+                image: '../images/portfolio/DLL.png',
+                description: '차량 플랫폼 IDS Backend 및 Embedded 개발을 담당했습니다. Rust 기반 IDS 서비스 구현, 플랫폼 전반 서비스 포팅, 보안 통신 프레임워크 설계, 성능 최적화를 주도했습니다.',
+                duration: '2024.12 - Present',
+                role: 'Security Engineer',
+                status: 'In Progress',
+                tags: ['Rust', 'Yocto', 'Linux', 'IDS', 'eBPF', 'Systemd']
+            },
+            exp2: {
+                category: 'Work Experience',
+                title: 'AhnLab Security Engineer',
+                image: '../images/portfolio/energyDashboard.png',
+                description: 'Linux Antivirus V3 개발을 주도하며 탐지 엔진 개선, 안정성 확보, 배포/운영 이슈 대응을 수행했습니다.',
+                duration: '2020.11 - 2024.12',
+                role: 'Security Engineer',
+                status: 'Completed',
+                tags: ['Linux', 'Security', 'AV Engine', 'System Programming', 'C']
+            }
+        };
+
+        function openModal(expId) {
+            const data = experienceData[expId];
+            if (!data) return;
+            document.getElementById('modalImage').src = data.image;
+            document.getElementById('modalCategory').textContent = data.category;
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalDescription').textContent = data.description;
+            document.getElementById('modalDuration').textContent = data.duration;
+            document.getElementById('modalRole').textContent = data.role;
+            document.getElementById('modalStatus').textContent = data.status;
+
+            const tagsContainer = document.getElementById('modalTags');
+            tagsContainer.innerHTML = data.tags.map(tag => `<span class="modal-tag">${tag}</span>`).join('');
+
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event.target.id === 'modalOverlay' || event.currentTarget.classList.contains('modal-close')) {
+                document.getElementById('modalOverlay').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('modalOverlay').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html>

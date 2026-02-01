@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laundromat Convergence - 3D Installation Prototype</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(180deg, #f5f5f5 0%, #e8f4f8 50%, #d4e9f7 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.5s ease;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 700;
+            margin: 40px 0 20px 0;
+            padding: 0 20px;
+            background: linear-gradient(135deg, #1a5490 0%, #2c5aa0 50%, #4a7bc8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            letter-spacing: 3px;
+            line-height: 1.3;
+        }
+        
+        .hook-sentence {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-style: italic;
+            color: #1a5490;
+            text-align: center;
+            max-width: 800px;
+            margin: 20px auto 30px auto;
+            padding: 0 20px;
+            line-height: 1.5;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+            font-size: 20px;
+            line-height: 1.8;
+            max-width: 900px;
+            text-align: center;
+            font-style: italic;
+            font-weight: 400;
+        }
+        
+        #controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(44, 90, 160, 0.15);
+            max-width: 900px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        button {
+            padding: 14px 35px;
+            font-size: 17px;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1a5490 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px;
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #1a5490 0%, #0d3a6f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 90, 160, 0.4);
+        }
+        
+        #canvasContainer {
+            box-shadow: 0 8px 24px rgba(44, 90, 160, 0.2);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .instruction {
+            text-align: center;
+            font-size: 15px;
+            color: #2c5aa0;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        
+        #content-section {
+            max-width: 900px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(44, 90, 160, 0.12);
+            backdrop-filter: blur(10px);
+        }
+        
+        .narrative-section {
+            position: relative;
+            max-width: 900px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(44, 90, 160, 0.12);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-number {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 140px;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(44, 90, 160, 0.15) 0%, rgba(26, 84, 144, 0.08) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .narrative-section p {
+            line-height: 2;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            font-size: 22px;
+            font-weight: 300;
+            text-align: justify;
+        }
+        
+        .narrative-section p:first-of-type::first-letter {
+            font-size: 72px;
+            font-weight: bold;
+            float: left;
+            line-height: 60px;
+            padding-right: 8px;
+            margin-top: 3px;
+            color: #2c5aa0;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .pull-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            line-height: 1.5;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1a5490 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
+            font-weight: 600;
+            text-align: center;
+            margin: 50px 0;
+            padding: 40px;
+            border-left: 8px solid #2c5aa0;
+            background-color: rgba(44, 90, 160, 0.05);
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 12px rgba(44, 90, 160, 0.1);
+        }
+        
+        #content-section p {
+            line-height: 1.8;
+            color: #2a2a2a;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 300;
+        }
+        
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(44, 90, 160, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+        
+        .image-caption {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #2c5aa0;
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+        
+        #intro-interaction {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .interaction-prompt {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 28px;
+            color: #1a5490;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-style: italic;
+        }
+        
+        .interaction-area {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(44, 90, 160, 0.12) 0%, rgba(30, 61, 107, 0.12) 100%);
+            border-radius: 20px;
+            border: 3px dashed #2c5aa0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(44, 90, 160, 0.1);
+        }
+        
+        #washing-machine-target {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            box-shadow: 0 6px 20px rgba(44, 90, 160, 0.15);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            padding: 15px;
+        }
+        
+        #washing-machine-target img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        #washing-machine-target.drag-over {
+            transform: scale(1.08);
+            box-shadow: 0 12px 30px rgba(44, 90, 160, 0.3);
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 100%);
+        }
+        
+        #detergent {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            width: 55px;
+            height: 80px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 10px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        #detergent:hover {
+            transform: scale(1.15) rotate(-8deg);
+            box-shadow: 0 6px 20px rgba(67, 233, 123, 0.5);
+        }
+        
+        #detergent.dragging {
+            cursor: grabbing;
+            opacity: 0.8;
+        }
+        
+        .drag-instruction {
+            font-family: 'Cormorant Garamond', serif;
+            text-align: center;
+            font-size: 16px;
+            color: #2c5aa0;
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        
+        #experience-section {
+            display: none;
+        }
+        
+        #experience-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Laundromat Convergence: Cycles of Necessity</h1>
+    <div class="hook-sentence">
+        Step into any laundromat in New York, and you'll find the city's true portrait.
+    </div>
+    <div class="subtitle">
+        3D visualization of the physical installation: A front-loading washing machine mounted on a pedestal stand (40" height). 
+        The exterior sides feature NYC maps with laundromat locations. The interior shows water complaint data with LED lighting.
+    </div>
+    
+    <div id="content-section">
+        <div class="image-container">
+            <img src="https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/east_coast_laundromat.png" alt="Laundromat businesses across the East Coast">
+            <div class="image-caption">Laundromat Distribution — East Coast</div>
+        </div>
+        
+        <div class="image-container">
+            <img src="https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/nyc_laundromat.png" alt="Laundromat businesses in NYC">
+            <div class="image-caption">Laundromat Density — New York City</div>
+        </div>
+        
+        <p>
+            These humble spaces have woven themselves into the fabric of our city, becoming gathering places where all races and backgrounds converge. In the rhythm of the washing machine—fill, agitate, rinse, spin—we find a metaphor for New York itself: diverse communities mixing, neighborhoods transforming, necessities bringing us together, and through it all, a shared identity emerging.
+        </p>
+        
+        <div class="image-container">
+            <img src="https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/metaphor.png" alt="Washing machine cycle as metaphor for urban evolution">
+            <div class="image-caption">The Cycle — Urban Metaphor</div>
+        </div>
+    </div>
+    
+    <!-- Population and Economics Section -->
+    <div class="narrative-section">
+        
+        <p>
+            New York has always been one of the world's most densely populated cities, a melting pot since its founding. This map shows our population distribution in 2000—a pattern that echoes decades past and continues today.
+        </p>
+        
+        <div class="image-container">
+            <img src="https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/census_demo_2000.png" alt="NYC Population Distribution 2000">
+            <div class="image-caption">Population Density — Census 2000</div>
+        </div>
+        
+        <p>
+            Whether it's in affluent areas where land and building values are higher than elsewhere, the need for laundromat businesses in NYC has always persisted.
+        </p>
+        
+        <div class="image-container">
+            <img src="https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/total_asset.png" alt="Property Value Distribution">
+            <div class="image-caption">Property Values — NYC Assessment Data</div>
+        </div>
+    </div>
+    
+    <!-- Infrastructure Section -->
+    <div class="narrative-section">
+        
+        <p>
+            Yet this culture persists despite significant challenges. Water infrastructure struggles to keep pace with our needs. Just in the last three months (July-October 2025), thousands of water-related complaints flooded 311.
+        </p>
+        
+        <div class="image-container">
+            <img src="https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/water_complaints_2025.png" alt="NYC Water Complaints July-October 2025">
+            <div class="image-caption">Water System Failures — 311 Complaints 2025</div>
+        </div>
+        
+        <div class="pull-quote">
+            Have you ever considered your everyday routines as part of New York's cultural tapestry?
+        </div>
+        
+        <p>
+            Among the countless traditions that define our city, laundromats remain essential—quiet pillars ensuring millions of New Yorkers can live with dignity, in clean clothes, no matter their circumstances.
+        </p>
+    </div>
+    
+    <div id="intro-interaction">
+        <div class="interaction-prompt">
+            Drag the detergent to the washing machine to explore the 3D model
+        </div>
+        
+        <div class="interaction-area">
+            <div id="detergent" draggable="true">🧴</div>
+            <div id="washing-machine-target">
+                <img src = "https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/dryer.png" alt="Washing Machine" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+        </div>
+        
+        <div class="drag-instruction">
+            ↑ Drag the detergent bottle to begin the interactive experience
+        </div>
+    </div>
+    
+    <div id="experience-section">
+        <div id="controls">
+            <button id="toggle-door">Toggle Drum Door</button>
+            <button id="reset-view">🧺 Reset View</button>
+        </div>
+        
+        <div id="canvasContainer"></div>
+        <div class="instruction">Drag to rotate the view • Scroll to zoom</div>
+    </div>
+
+    <script>
+        // Dynamic background color change on scroll
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = scrollPosition / documentHeight;
+            
+            // Define color stops representing the "mixing" theme
+            // Start: Light gray (clean whites)
+            // Middle: Blue tones (water, washing)
+            // End: Mix of colors (diversity, mixing)
+            
+            if (scrollPercentage < 0.25) {
+                // Light blue
+                document.body.style.background = `linear-gradient(180deg, 
+                    rgb(179, 220, 237) 0%, 
+                    rgb(206, 237, 250) 50%, 
+                    rgb(225, 245, 254) 100%)`;
+            } else if (scrollPercentage < 0.5) {
+                // Medium blue
+                document.body.style.background = `linear-gradient(180deg, 
+                    rgb(57, 106, 177) 0%, 
+                    rgb(82, 139, 204) 50%, 
+                    rgb(100, 162, 222) 100%)`;
+            } else if (scrollPercentage < 0.75) {
+                // Light medium blue
+                document.body.style.background = `linear-gradient(180deg, 
+                    rgb(100, 162, 222) 0%, 
+                    rgb(144, 202, 249) 50%, 
+                    rgb(179, 220, 237) 100%)`;
+            } else {
+                // Light blue (end)
+                document.body.style.background = `linear-gradient(180deg, 
+                    rgb(179, 220, 237) 0%, 
+                    rgb(206, 237, 250) 50%, 
+                    rgb(225, 245, 254) 100%)`;
+            }
+        });
+        
+        // Drag and drop functionality
+        let detergent = document.getElementById('detergent');
+        let target = document.getElementById('washing-machine-target');
+        let introInteraction = document.getElementById('intro-interaction');
+        let experienceSection = document.getElementById('experience-section');
+        
+        detergent.addEventListener('dragstart', (e) => {
+            detergent.classList.add('dragging');
+        });
+        
+        detergent.addEventListener('dragend', (e) => {
+            detergent.classList.remove('dragging');
+        });
+        
+        target.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            target.classList.add('drag-over');
+        });
+        
+        target.addEventListener('dragleave', () => {
+            target.classList.remove('drag-over');
+        });
+        
+        target.addEventListener('drop', (e) => {
+            e.preventDefault();
+            target.classList.remove('drag-over');
+            
+            // Hide intro interaction and show 3D experience
+            introInteraction.style.display = 'none';
+            experienceSection.classList.add('active');
+            
+            // Initialize p5 sketch
+            setTimeout(() => {
+                setup();
+            }, 100);
+        });
+        
+        // P5.js 3D visualization code
+        let doorAngle = 0;
+        let targetDoorAngle = 0;
+        let rotationX = -0.4;
+        let rotationY = 0.6;
+        let zoom = 1;
+        let doorSound;
+        
+        let nycOutline = [];
+        let laundryDots = [];
+        let complaintDots = [];
+        let canvasCreated = false;
+        
+        function setup() {
+            if (canvasCreated) return;
+            canvasCreated = true;
+            
+            let canvas = createCanvas(900, 700, WEBGL);
+            canvas.parent('canvasContainer');
+            
+            // Load images
+            censusImage = loadImage('https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/census_demo_2000.png');
+            laundromatImage = loadImage('https://raw.githubusercontent.com/BurtKim-ust/BurtKim-ust.github.io/main/my-folder/laundromat-prototype/nyc_laundromat.png');
+
+            // Use HTML5 Audio with correct GitHub raw URL
+            doorSound = new Audio('https://raw.githubusercontent.com/BurtKim-ust/DataVisualization/main/laundromat-prototype/washing_machine.mp3');
+            doorSound.volume = 0.5; // 50% volume
+            
+            doorSound.addEventListener('error', (e) => {
+                console.error('Error loading audio file:', e);
+            });
+            
+            doorSound.addEventListener('canplaythrough', () => {
+                console.log('Audio file loaded successfully!');
+            });
+            
+            generateNYCOutline();
+            
+            // Generate laundromat locations
+            for (let i = 0; i < 35; i++) {
+                laundryDots.push({
+                    x: random(-80, 80),
+                    y: random(-100, 60),
+                    size: random(2, 5)
+                });
+            }
+            
+            // Generate water complaint locations
+            for (let i = 0; i < 50; i++) {
+                complaintDots.push({
+                    x: random(-80, 80),
+                    y: random(-100, 60),
+                    size: random(2, 4),
+                    pulseOffset: random(TWO_PI)
+                });
+            }
+            
+            // Event listeners
+            document.getElementById('toggle-door').addEventListener('click', () => {
+                let previousAngle = targetDoorAngle;
+                targetDoorAngle = targetDoorAngle === 0 ? 120 : 0;
+                
+                // Play sound when opening the door (going from 0 to 120)
+                if (previousAngle === 0 && targetDoorAngle === 120) {
+                    console.log('Attempting to play sound...');
+                    if (doorSound) {
+                        doorSound.currentTime = 0; // Reset to beginning
+                        doorSound.play()
+                            .then(() => console.log('Sound playing!'))
+                            .catch(err => console.error('Error playing sound:', err));
+                    }
+                }
+                // Stop sound when closing the door (going from 120 to 0)
+                else if (previousAngle === 120 && targetDoorAngle === 0) {
+                    console.log('Stopping sound...');
+                    if (doorSound && !doorSound.paused) {
+                        doorSound.pause();
+                        doorSound.currentTime = 0; // Reset to beginning
+                    }
+                }
+            });
+            
+            document.getElementById('reset-view').addEventListener('click', () => {
+                rotationX = -0.3;
+                rotationY = 0;
+                zoom = 1;
+            });
+        }
+        
+        function draw() {
+            if (!canvasCreated) return;
+            
+            background(245);
+            
+            doorAngle = lerp(doorAngle, targetDoorAngle, 0.1);
+            
+            if (mouseIsPressed) {
+                rotationY += (mouseX - pmouseX) * 0.01;
+                rotationX += (mouseY - pmouseY) * 0.01;
+                rotationX = constrain(rotationX, -PI/2, PI/2);
+            }
+            
+            // Move camera to focus on washing machine center
+            translate(0, 200, 0); // Move view up to center on washing machine
+            
+            scale(zoom);
+            rotateX(rotationX);
+            rotateY(rotationY);
+            
+            ambientLight(120);
+            directionalLight(255, 255, 255, 0.5, -0.5, -1);
+            pointLight(255, 255, 255, 200, -200, 200);
+            
+            // Draw pedestal (below washing machine)
+            push();
+            translate(0, -100, 0); // Adjusted for shorter pedestal
+            drawPedestal();
+            pop();
+            
+            // Draw washing machine
+            push();
+            translate(0, -400, 0);
+            drawWashingMachine();
+            pop();
+            
+            // Add people around (sides and back)
+            drawPeopleAroundMachine();
+        }
+        
+        function drawPedestal() {
+            push();
+            fill(240);
+            stroke(200);
+            strokeWeight(2);
+            
+            // Main column - reduced to 200 (half of 400)
+            translate(0, 0, 0);
+            box(120, 200, 120);
+            
+            // Base platform
+            translate(0, 110, 0);
+            fill(220);
+            box(140, 20, 140);
+            
+            // Top platform
+            translate(0, -220, 0);
+            fill(220);
+            box(140, 20, 140);
+            
+            pop();
+        }
+
+        // === Add People Around the Washing Machine ===
+        function drawPeopleAroundMachine() {
+            const people = [
+                { x: -250, z: 80, skin: color(255, 224, 189), shirt: color(70, 130, 180), pants: color(50, 50, 100), hair: color(40, 30, 20), label: "Asian" },
+                { x: 250, z: 80, skin: color(255, 219, 172), shirt: color(220, 20, 60), pants: color(60, 60, 120), hair: color(210, 180, 140), label: "White" },
+                { x: -180, z: -180, skin: color(60, 40, 30), shirt: color(255, 215, 0), pants: color(80, 80, 80), hair: color(20, 20, 20), label: "Black" },
+                { x: 180, z: -180, skin: color(205, 133, 63), shirt: color(0, 128, 0), pants: color(70, 70, 140), hair: color(70, 50, 30), label: "Hispanic" }
+            ];
+            for (let p of people) {
+                push();
+                translate(p.x, -100, p.z);
+                
+                // LEGS (bottom, pants)
+                push();
+                fill(p.pants);
+                noStroke();
+                translate(-12, 50, 0);
+                box(18, 100, 18); // left leg
+                pop();
+                
+                push();
+                fill(p.pants);
+                noStroke();
+                translate(12, 50, 0);
+                box(18, 100, 18); // right leg
+                pop();
+                
+                // SHOES
+                push();
+                fill(60, 40, 30);
+                noStroke();
+                translate(-12, 105, 5);
+                box(20, 10, 30); // left shoe
+                pop();
+                
+                push();
+                fill(60, 40, 30);
+                noStroke();
+                translate(12, 105, 5);
+                box(20, 10, 30); // right shoe
+                pop();
+                
+                // TORSO (body/shirt) - larger
+                push();
+                fill(p.shirt);
+                noStroke();
+                translate(0, -30, 0);
+                box(60, 120, 30); // bigger torso
+                pop();
+                
+                // NECK
+                push();
+                fill(p.skin);
+                noStroke();
+                translate(0, -95, 0);
+                cylinder(10, 20);
+                pop();
+                
+                // HEAD - larger
+                push();
+                fill(p.skin);
+                noStroke();
+                translate(0, -115, 0);
+                sphere(30); // bigger head
+                pop();
+                
+                // HAIR - on top of head
+                push();
+                fill(p.hair);
+                noStroke();
+                translate(0, -135, 0);
+                sphere(32);
+                pop();
+                
+                // EYES
+                push();
+                fill(255);
+                noStroke();
+                translate(-8, -115, 27);
+                sphere(4); // left eye white
+                pop();
+                
+                push();
+                fill(255);
+                noStroke();
+                translate(8, -115, 27);
+                sphere(4); // right eye white
+                pop();
+                
+                push();
+                fill(0);
+                noStroke();
+                translate(-8, -115, 30);
+                sphere(2); // left pupil
+                pop();
+                
+                push();
+                fill(0);
+                noStroke();
+                translate(8, -115, 30);
+                sphere(2); // right pupil
+                pop();
+                
+                // NOSE
+                push();
+                fill(p.skin);
+                stroke(0, 50);
+                strokeWeight(1);
+                translate(0, -110, 28);
+                cone(4, 8);
+                pop();
+                
+                // ARMS - longer and more visible
+                push();
+                fill(p.shirt);
+                noStroke();
+                translate(-35, -25, 0);
+                box(15, 80, 15); // left arm
+                pop();
+                
+                push();
+                fill(p.shirt);
+                noStroke();
+                translate(35, -25, 0);
+                box(15, 80, 15); // right arm
+                pop();
+                
+                // HANDS
+                push();
+                fill(p.skin);
+                noStroke();
+                translate(-35, 20, 0);
+                sphere(8); // left hand
+                pop();
+                
+                push();
+                fill(p.skin);
+                noStroke();
+                translate(35, 20, 0);
+                sphere(8); // right hand
+                pop();
+                
+                // Label above each person
+                push();
+                translate(0, -160, 0);
+                rotateY(-rotationY);
+                fill(0);
+                textAlign(CENTER);
+                textSize(16);
+                textStyle(BOLD);
+                text(p.label, 0, -10);
+                pop();
+                pop();
+            }
+        }
+        
+        function drawWashingMachine() {
+            push();
+            
+            // FIRST: Draw exterior maps OUTSIDE the washing machine body
+            push();
+            translate(-151, 0, 0); // Just 1 unit outside left wall (attached to surface)
+            rotateY(-HALF_PI); // Flipped to face left (outward)
+            
+            // Draw acrylic panel
+            fill(255, 255, 255, 250);
+            stroke(180);
+            strokeWeight(3);
+            rect(-110, -170, 220, 340);
+            
+            // Frame
+            noFill();
+            stroke(100);
+            strokeWeight(5);
+            rect(-115, -175, 230, 350);
+            
+            // Map content
+            translate(0, 20, 2);
+            if (censusImage && laundromatImage) {
+                drawMapContent(true); // left side uses census image
+            }
+            pop();
+            
+            // Right exterior map
+            push();
+            translate(151, 0, 0); // Just 1 unit outside right wall (attached to surface)
+            rotateY(HALF_PI); // Flipped to face right (outward)
+            
+            // Draw acrylic panel
+            fill(255, 255, 255, 250);
+            stroke(180);
+            strokeWeight(3);
+            rect(-110, -170, 220, 340);
+            
+            // Frame
+            noFill();
+            stroke(100);
+            strokeWeight(5);
+            rect(-115, -175, 230, 350);
+            
+            // Map content
+            translate(0, 20, 2);
+            if (censusImage && laundromatImage) {
+                drawMapContent(false); // right side uses laundromat image
+            }
+            pop();
+            
+            // THEN: Draw washing machine body
+            push();
+            fill(250);
+            stroke(180);
+            strokeWeight(2);
+            
+            // Back wall
+            push();
+            translate(0, 0, -120);
+            plane(300, 360);
+            pop();
+            
+            // Left side wall
+            push();
+            translate(-150, 0, 0);
+            rotateY(HALF_PI);
+            plane(240, 360);
+            pop();
+            
+            // Right side wall
+            push();
+            translate(150, 0, 0);
+            rotateY(HALF_PI);
+            plane(240, 360);
+            pop();
+            
+            // Top wall
+            push();
+            translate(0, -180, 0);
+            rotateX(HALF_PI);
+            plane(300, 240);
+            pop();
+            
+            // Bottom wall
+            push();
+            translate(0, 180, 0);
+            rotateX(HALF_PI);
+            plane(300, 240);
+            pop();
+            
+            pop();
+            
+            push();
+            translate(0, -180, 80);
+            fill(240);
+            stroke(160);
+            strokeWeight(1);
+            box(280, 20, 80);
+            
+            fill(50);
+            noStroke();
+            translate(-100, 0, 42);
+            box(15, 8, 4);
+            translate(30, 0, 0);
+            box(15, 8, 4);
+            translate(30, 0, 0);
+            box(15, 8, 4);
+            
+            translate(60, 0, 0);
+            fill(100, 150, 200);
+            box(60, 15, 4);
+            pop();
+            
+            push();
+            translate(0, -140, 122);
+            fill(230);
+            stroke(150);
+            strokeWeight(1);
+            box(100, 30, 4);
+            pop();
+            
+            drawFrontPanel();
+            
+            pop();
+        }
+        
+        function drawMapContent(useLeftImage) {
+            // Draw image on the map panel
+            push();
+            texture(useLeftImage ? censusImage : laundromatImage);
+            rect(-110, -170, 220, 340);
+            pop();
+        }
+                
+        function drawFrontPanel() {
+            push();
+            translate(0, 0, 120);
+            
+            // Draw ONLY the drum opening rings - NO front panel at all
+            push();
+            translate(0, 20, 2);
+            
+            // Outer chrome ring
+            noFill();
+            stroke(150);
+            strokeWeight(4);
+            circle(0, 0, 240);
+            
+            // Inner chrome ring
+            stroke(120);
+            strokeWeight(3);
+            circle(0, 0, 220);
+            pop();
+            
+            // Draw the door
+            drawDoor();
+            
+            // Always draw interior (visible through the open front)
+            if (doorAngle > 20) {
+                drawInterior();
+            }
+            
+            pop();
+        }
+        
+        function drawDoor() {
+            push();
+            translate(-110, 20, 8);
+            rotateY(radians(-doorAngle));
+            translate(110, 0, 0);
+            
+            fill(190, 195, 200);
+            stroke(140);
+            strokeWeight(4);
+            circle(0, 0, 220);
+            
+            noFill();
+            stroke(70, 130, 180);
+            strokeWeight(8);
+            circle(0, 0, 205);
+            
+            let glassAlpha = map(doorAngle, 0, 120, 200, 60);
+            fill(120, 140, 160, glassAlpha);
+            stroke(90, 110, 130);
+            strokeWeight(3);
+            circle(0, 0, 190);
+            
+            noStroke();
+            fill(200, 220, 240, glassAlpha * 0.5);
+            arc(0, 0, 190, 190, PI, TWO_PI);
+            
+            if (doorAngle > 30) {
+                push();
+                translate(0, 0, -5);
+                fill(60, 60, 70, 150);
+                stroke(40);
+                strokeWeight(2);
+                circle(0, 0, 160);
+                
+                for (let i = 0; i < 3; i++) {
+                    push();
+                    rotate(i * TWO_PI / 3);
+                    fill(50, 50, 60, 120);
+                    rect(-80, -8, 160, 16, 4);
+                    pop();
+                }
+                pop();
+            }
+            
+            push();
+            translate(90, 0, 10);
+            fill(120);
+            stroke(80);
+            strokeWeight(2);
+            rotateZ(HALF_PI);
+            cylinder(10, 50);
+            
+            translate(0, 25, 0);
+            sphere(12);
+            translate(0, -50, 0);
+            sphere(12);
+            pop();
+            
+            for (let i = 0; i < 3; i++) {
+                push();
+                translate(-108, -70 + i * 70, 8);
+                fill(100);
+                stroke(60);
+                strokeWeight(1);
+                box(8, 20, 12);
+                pop();
+            }
+            
+            pop();
+        }
+        
+        function drawInterior() {
+            if (doorAngle < 20) return;
+            
+            push();
+            
+            // ONLY draw the back wall with map - nothing else
+            push();
+            translate(0, 20, -160);
+            fill(255);
+            stroke(200);
+            strokeWeight(2);
+            circle(0, 0, 180);
+            pop();
+            
+            // THE MAP on back wall
+            push();
+            translate(0, 20, -158);
+            
+            // NYC outline
+            noFill();
+            stroke(0);
+            strokeWeight(4);
+            beginShape();
+            for (let point of nycOutline) {
+                vertex(point.x * 0.7, point.y * 0.7);
+            }
+            endShape(CLOSE);
+            
+            // Water complaint dots
+            complaintDots.forEach(dot => {
+                let pulse = 1 + 0.4 * sin(frameCount * 0.05 + dot.pulseOffset);
+                fill(0, 100, 255);
+                stroke(0, 50, 150);
+                strokeWeight(2);
+                circle(dot.x * 0.7, dot.y * 0.7, dot.size * 4 * pulse);
+            });
+            
+            // Title
+            fill(0);
+            noStroke();
+            textAlign(CENTER);
+            textSize(16);
+            textStyle(BOLD);
+            text('WATER COMPLAINTS', 0, -100);
+            textStyle(NORMAL);
+            textSize(12);
+            text('July - October 2025', 0, -85);
+            pop();
+            
+            pop();
+        }
+        
+        function generateNYCOutline() {
+            nycOutline = [
+                {x: -20, y: -80}, {x: -15, y: -70}, {x: -12, y: -50},
+                {x: -8, y: -30}, {x: -5, y: -10}, {x: 0, y: 10},
+                {x: 5, y: 30}, {x: 3, y: 45}, {x: -5, y: 50},
+                {x: -15, y: 48}, {x: -18, y: 40},
+                {x: -18, y: 40}, {x: -10, y: 52}, {x: 5, y: 58},
+                {x: 25, y: 60}, {x: 40, y: 55}, {x: 48, y: 42},
+                {x: 50, y: 28},
+                {x: 50, y: 28}, {x: 60, y: 18}, {x: 70, y: 5},
+                {x: 78, y: -15}, {x: 80, y: -30}, {x: 75, y: -45},
+                {x: 65, y: -55}, {x: 50, y: -60},
+                {x: 50, y: -60}, {x: 35, y: -72}, {x: 15, y: -82},
+                {x: -5, y: -90}, {x: -20, y: -88}, {x: -20, y: -80}
+            ];
+        }
+        
+        function mouseWheel(event) {
+            if (canvasCreated) {
+                zoom += event.delta * -0.0005;
+                zoom = constrain(zoom, 0.5, 2.5);
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
